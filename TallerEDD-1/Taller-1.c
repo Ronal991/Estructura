@@ -49,7 +49,7 @@ void calculadoraBasica() {
     printf("\nCalculadora basica: no olvides usar bien los simbolos (+, -, *, /): ");
     scanf("%lf %c %lf", &a, &op, &b);
     double res;
-    bool valido = true;
+    int valido = 1;
     switch (op) {
         case '+': res = a + b; break;
         case '-': res = a - b; break;
@@ -57,14 +57,14 @@ void calculadoraBasica() {
         case '/':
             if (b == 0) {
                 printf("Error: division por cero.\n");
-                valido = false;
+                valido = 0;
             } else {
                 res = a / b;
             }
             break;
         default:
             printf("Operador no valido. Usa + - * /.\n");
-            valido = false;
+            valido = 0;
     }
     if (valido) {
         printf("Resultado: %lf\n", res);

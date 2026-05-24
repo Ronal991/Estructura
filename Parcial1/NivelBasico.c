@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+#define MAX 100
+
 void printArray(int arr[], int n) {
     for (int i = 0; i < n; i++) {
         printf("%d ", arr[i]);
@@ -82,7 +84,12 @@ int main() {
             return 1;
         }
 
-        int original[n];
+        if (n > MAX) {
+            printf("Cantidad maxima soportada: %d\n", MAX);
+            return 1;
+        }
+
+        int original[MAX];
         printf("Ingrese los elementos: ");
         for (int i = 0; i < n; i++) {
             scanf("%d", &original[i]);
@@ -96,7 +103,7 @@ int main() {
         int opcion;
         scanf("%d", &opcion);
 
-        int arr[n];
+        int arr[MAX];
         for (int i = 0; i < n; i++) {
             arr[i] = original[i];
         }
