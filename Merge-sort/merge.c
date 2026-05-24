@@ -40,8 +40,10 @@ int main() {
     int n;
     char continuar = 's';
 
+    printf("Bienvenido a la organizadora de datos\n");
+
     while (continuar == 's' || continuar == 'S') {
-        printf("Cuantos numeros desea ordenar?: ");
+        printf("Cuantos numeros desea organizar?: ");
         if (scanf("%d", &n) != 1 || n <= 0) {
             printf("Entrada invalida. Ingrese un numero entero positivo.\n");
             int ch;
