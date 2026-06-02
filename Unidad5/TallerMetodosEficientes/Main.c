@@ -1,6 +1,6 @@
 /*
-Autores:
-Ronald Smith Angulo Arboleda
+Autores:Ronald Smith Angulo Arboleda
+        Jefferson Montaño
 
 Taller Unidad 5
 Métodos de Ordenamiento Eficientes y Búsqueda Binaria
