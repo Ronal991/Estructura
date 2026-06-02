@@ -1,3 +1,10 @@
+/*
+Autores:
+Ronald Smith Angulo Arboleda
+
+Taller Unidad 5
+Métodos de Ordenamiento Eficientes y Búsqueda Binaria
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -5,6 +12,7 @@
 #define MAX_CONTENEDORES 30
 #define PESO_MIN 100
 #define PESO_MAX 1000
+
 
 int pesos[MAX_CONTENEDORES];
 int ordenado = 0;
@@ -14,7 +22,10 @@ void mostrarMenu(void);
 int registrarPesos(int *cantidad);
 int generarPesosAleatorios(int *cantidad);
 void mostrarContenedores(int cantidad);
+void hundir(int i, int cantidad);
 void ordenarMetodo1(int cantidad);
+void fusionar(int izq, int mid, int der);
+void ordenarMerge(int izq, int der);
 void ordenarMetodo2(int cantidad);
 int particion(int bajo, int alto);
 void ordenarMetodo3(int bajo, int alto);
@@ -121,9 +132,9 @@ void mostrarMenu(void)
     printf("1. Registrar peso de contenedores manualmente\n");
     printf("2. Generar pesos aleatorios de contenedores\n");
     printf("3. Mostrar contenedores registrados\n");
-    printf("4. Ordenar contenedores Metodo 1 (bubble sort)\n");
-    printf("5. Ordenar contenedores Metodo 2 (insertion sort)\n");
-    printf("6. Ordenar contenedores Metodo 3 (quick sort)\n");
+    printf("4. Ordenar contenedores Metodo 1 (Quick sort)\n");
+    printf("5. Ordenar contenedores Metodo 2 (Merge sort)\n");
+    printf("6. Ordenar contenedores Metodo 3 (Heap sort)\n");
     printf("7. Buscar contenedor\n");
     printf("8. Salir\n");
     printf("========================================\n");
@@ -186,34 +197,82 @@ void mostrarContenedores(int cantidad)
     }
 }
 
+void hundir(int i, int cantidad)
+{
+    int mayor = i;
+    int izquierdo = 2 * i + 1;
+    int derecho = 2 * i + 2;
+
+    if (izquierdo < cantidad && pesos[izquierdo] > pesos[mayor]) {
+        mayor = izquierdo;
+    }
+
+    if (derecho < cantidad && pesos[derecho] > pesos[mayor]) {
+        mayor = derecho;
+    }
+
+    if (mayor != i) {
+        int temp = pesos[i];
+        pesos[i] = pesos[mayor];
+        pesos[mayor] = temp;
+        hundir(mayor, cantidad);
+    }
+}
+
 void ordenarMetodo1(int cantidad)
 {
-    for (int i = 0; i < cantidad - 1; i++) {
-        int intercambiado = 0;
-        for (int j = 0; j < cantidad - 1 - i; j++) {
-            if (pesos[j] > pesos[j + 1]) {
-                int temp = pesos[j];
-                pesos[j] = pesos[j + 1];
-                pesos[j + 1] = temp;
-                intercambiado = 1;
-            }
+    for (int i = cantidad / 2 - 1; i >= 0; i--) {
+        hundir(i, cantidad);
+    }
+
+    for (int i = cantidad - 1; i > 0; i--) {
+        int temp = pesos[0];
+        pesos[0] = pesos[i];
+        pesos[i] = temp;
+        hundir(0, i);
+    }
+}
+
+void fusionar(int izq, int mid, int der)
+{
+    int temp[MAX_CONTENEDORES];
+    int i = izq, j = mid + 1, k = 0;
+
+    while (i <= mid && j <= der) {
+        if (pesos[i] <= pesos[j]) {
+            temp[k++] = pesos[i++];
+        } else {
+            temp[k++] = pesos[j++];
         }
-        if (!intercambiado) {
-            break;
-        }
+    }
+
+    while (i <= mid) {
+        temp[k++] = pesos[i++];
+    }
+
+    while (j <= der) {
+        temp[k++] = pesos[j++];
+    }
+
+    for (i = izq, k = 0; i <= der; i++, k++) {
+        pesos[i] = temp[k];
+    }
+}
+
+void ordenarMerge(int izq, int der)
+{
+    if (izq < der) {
+        int mid = izq + (der - izq) / 2;
+        ordenarMerge(izq, mid);
+        ordenarMerge(mid + 1, der);
+        fusionar(izq, mid, der);
     }
 }
 
 void ordenarMetodo2(int cantidad)
 {
-    for (int i = 1; i < cantidad; i++) {
-        int clave = pesos[i];
-        int j = i - 1;
-        while (j >= 0 && pesos[j] > clave) {
-            pesos[j + 1] = pesos[j];
-            j--;
-        }
-        pesos[j + 1] = clave;
+    if (cantidad > 1) {
+        ordenarMerge(0, cantidad - 1);
     }
 }
 
