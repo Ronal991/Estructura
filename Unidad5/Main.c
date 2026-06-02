@@ -117,16 +117,13 @@ int main(void)
 
 void mostrarMenu(void)
 {
-    printf("========================================\n");
-    printf("SISTEMA DE ORGANIZACION DE CONTENEDORES\n");
-    printf("MUELLE DE CARGA\n");
-    printf("========================================\n");
+    printf("=========SISTEMA DE ORGANIZACION DE CONTENEDORES MUELLE DE CARGA=======\n");
     printf("1. Registrar peso de contenedores manualmente\n");
     printf("2. Generar pesos aleatorios de contenedores\n");
     printf("3. Mostrar contenedores registrados\n");
-    printf("4. Ordenar contenedores Metodo 1\n");
-    printf("5. Ordenar contenedores Metodo 2\n");
-    printf("6. Ordenar contenedores Metodo 3\n");
+    printf("4. Ordenar contenedores Metodo 1 (bubble sort)\n");
+    printf("5. Ordenar contenedores Metodo 2 (insertion sort)\n");
+    printf("6. Ordenar contenedores Metodo 3 (quick sort)\n");
     printf("7. Buscar contenedor\n");
     printf("8. Salir\n");
     printf("========================================\n");
