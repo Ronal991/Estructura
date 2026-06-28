@@ -160,22 +160,29 @@ void mostrarMenu() {
     printf("|----------------------------------------|\n");
     printf("| 1. Registrar nueva maleta              |\n");
     printf("| 2. Mostrar cola de espera              |\n");
-    printf("| 3. Revisar siguiente maleta            |\n");
-    printf("| 4. Trasladar maleta a bodega           |\n");
-    printf("| 5. Visualizar maletas en bodega        |\n");
-    printf("| 6. Retirar última maleta de bodega     |\n");
-    printf("| 7. Salir y liberar memoria             |\n");
+    printf("| 3. Revisar y cargar siguiente maleta   |\n");
+    printf("| 4. Visualizar maletas en bodega        |\n");
+    printf("| 5. Retirar ultima maleta de bodega     |\n");
+    printf("| 6. Salir y liberar memoria             |\n");
     printf("------------------------------------------\n");
-    printf("Seleccione una opción: ");
+    printf("Seleccione una opcion: ");
 }
 
-void revisarSiguienteMaleta(Cola *c) {
+void revisarYCargarSiguienteMaleta(Cola *c, Pila *p) {
+    Nodo *maleta;
+
     if (colaVacia(c)) {
-        printf("\n✗ No hay maletas en la cola de espera\n");
+        printf("\n No hay maletas en la cola de espera\n");
         return;
     }
+
     printf("\n=== SIGUIENTE MALETA EN ESPERA ===\n");
     printf("Documento: %d | Peso: %.2f kg\n", c->frente->documento, c->frente->peso);
+
+    maleta = desencolarMaleta(c);
+    if (maleta != NULL) {
+        apilarMaleta(p, maleta);
+    }
 }
 
 // ==================== FUNCIÓN PRINCIPAL ====================
@@ -210,7 +217,7 @@ int main() {
                 getchar();
 
                 if (documento <= 0 || peso <= 0) {
-                    printf("\n✗ Documento y peso deben ser mayores a 0\n");
+                    printf("\n Documento y peso deben ser mayores a 0\n");
                 } else {
                     encolarMaleta(&colaEspera, documento, peso);
                 }
@@ -221,21 +228,14 @@ int main() {
                 break;
 
             case 3:
-                revisarSiguienteMaleta(&colaEspera);
+                revisarYCargarSiguienteMaleta(&colaEspera, &bodega);
                 break;
 
             case 4:
-                maleta = desencolarMaleta(&colaEspera);
-                if (maleta != NULL) {
-                    apilarMaleta(&bodega, maleta);
-                }
-                break;
-
-            case 5:
                 mostrarPila(&bodega);
                 break;
 
-            case 6:
+            case 5:
                 maleta = desapilarMaleta(&bodega);
                 if (maleta != NULL) {
                     printf("\n✓ Maleta retirada de bodega: Documento %d, Peso: %.2f kg\n", 
@@ -244,7 +244,7 @@ int main() {
                 }
                 break;
 
-            case 7:
+            case 6:
                 printf("\n--- Liberando memoria ---\n");
                 liberarCola(&colaEspera);
                 liberarPila(&bodega);
