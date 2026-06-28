@@ -15,7 +15,7 @@ typedef struct {
     Nodo *final;
 } Cola;
 
-// Estructura Pila (LIFO) - Bodega del avión
+// Estructura Pila (LIFO) - Bodega del avion
 typedef struct {
     Nodo *tope;
 } Pila;
@@ -60,7 +60,7 @@ void encolarMaleta(Cola *c, int documento, float peso) {
 
 Nodo* desencolarMaleta(Cola *c) {
     if (colaVacia(c)) {
-        printf("\n✗ Cola vacía\n");
+        printf("\n Cola vacia\n");
         return NULL;
     }
     Nodo *temp = c->frente;
@@ -74,10 +74,10 @@ Nodo* desencolarMaleta(Cola *c) {
 
 void mostrarCola(Cola *c) {
     if (colaVacia(c)) {
-        printf("\n✗ Cola de espera vacía\n");
+        printf("\n Cola de espera vacia\n");
         return;
     }
-    printf("\n=== COLA DE ESPERA (Orden de llegada) ===\n");
+    printf("\n COLA DE ESPERA (Orden de llegada)\n");
     Nodo *actual = c->frente;
     int posicion = 1;
     while (actual != NULL) {
@@ -111,13 +111,13 @@ int pilaVacia(Pila *p) {
 void apilarMaleta(Pila *p, Nodo *nodo) {
     nodo->siguiente = p->tope;
     p->tope = nodo;
-    printf("\n✓ Maleta trasladada a bodega: Documento %d, Peso: %.2f kg\n", 
+    printf("\n Maleta trasladada a bodega: Documento %d, Peso: %.2f kg\n", 
            nodo->documento, nodo->peso);
 }
 
 Nodo* desapilarMaleta(Pila *p) {
     if (pilaVacia(p)) {
-        printf("\n✗ Bodega vacía\n");
+        printf("\n Bodega vacia\n");
         return NULL;
     }
     Nodo *temp = p->tope;
@@ -128,10 +128,10 @@ Nodo* desapilarMaleta(Pila *p) {
 
 void mostrarPila(Pila *p) {
     if (pilaVacia(p)) {
-        printf("\n✗ Bodega vacía\n");
+        printf("\n Bodega vacia\n");
         return;
     }
-    printf("\n=== MALETAS EN BODEGA (Última en entrar, primera en salir) ===\n");
+    printf("\n MALETAS EN BODEGA (Ultima en entrar, primera en salir)\n");
     Nodo *actual = p->tope;
     int posicion = 1;
     while (actual != NULL) {
@@ -238,7 +238,7 @@ int main() {
             case 5:
                 maleta = desapilarMaleta(&bodega);
                 if (maleta != NULL) {
-                    printf("\n✓ Maleta retirada de bodega: Documento %d, Peso: %.2f kg\n", 
+                    printf("\n Maleta retirada de bodega: Documento %d, Peso: %.2f kg\n", 
                            maleta->documento, maleta->peso);
                     free(maleta);
                 }
@@ -249,11 +249,11 @@ int main() {
                 liberarCola(&colaEspera);
                 liberarPila(&bodega);
                 printf("✓ Memoria liberada correctamente\n");
-                printf("\n¡Gracias por usar el sistema! Hasta luego.\n");
+                printf("\nGracias por usar el sistema! Hasta luego.\n");
                 return 0;
 
             default:
-                printf("\n✗ Opción no válida. Intente de nuevo.\n");
+                printf("\n Opcion no valida. Intente de nuevo.\n");
         }
     }
 
