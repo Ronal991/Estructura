@@ -21,7 +21,8 @@ typedef struct {
 } Pila;
 
 // ==================== FUNCIONES DE NODO ====================
-
+// Crea un nodo que representa una maleta, asigna memoria dinámica
+// y almacena el documento y peso del pasajero.
 Nodo* crearNodo(int documento, float peso) {
     Nodo *nuevoNodo = (Nodo *)malloc(sizeof(Nodo));
     if (nuevoNodo == NULL) {
@@ -30,7 +31,7 @@ Nodo* crearNodo(int documento, float peso) {
     }
     nuevoNodo->documento = documento;
     nuevoNodo->peso = peso;
-    nuevoNodo->siguiente = NULL;
+    nuevoNodo->siguiente = NULL; // El nodo todavía no está enlazado
     return nuevoNodo;
 }
 
@@ -55,7 +56,7 @@ void encolarMaleta(Cola *c, int documento, float peso) {
         c->final->siguiente = nuevoNodo;
     }
     c->final = nuevoNodo;
-    printf("\n✓ Maleta registrada en cola: Documento %d, Peso: %.2f kg\n", documento, peso);
+    printf("\n Maleta registrada en cola: Documento %d, Peso: %.2f kg\n", documento, peso);
 }
 
 Nodo* desencolarMaleta(Cola *c) {
@@ -81,12 +82,15 @@ void mostrarCola(Cola *c) {
     Nodo *actual = c->frente;
     int posicion = 1;
     while (actual != NULL) {
+        // Imprime cada maleta en el orden en que fue registrada
         printf("%d. Documento: %d | Peso: %.2f kg\n", posicion, actual->documento, actual->peso);
         actual = actual->siguiente;
         posicion++;
     }
 }
 
+// Libera todos los nodos de la cola para evitar fugas de memoria.
+// Recorre la lista desde el frente hasta el final.
 void liberarCola(Cola *c) {
     Nodo *actual = c->frente;
     while (actual != NULL) {
@@ -109,12 +113,14 @@ int pilaVacia(Pila *p) {
 }
 
 void apilarMaleta(Pila *p, Nodo *nodo) {
+    // El nodo entrante sera el primero de la pila
     nodo->siguiente = p->tope;
     p->tope = nodo;
     printf("\n Maleta trasladada a bodega: Documento %d, Peso: %.2f kg\n", 
            nodo->documento, nodo->peso);
 }
 
+// Extrae la última maleta ingresada en la bodega (pila)
 Nodo* desapilarMaleta(Pila *p) {
     if (pilaVacia(p)) {
         printf("\n Bodega vacia\n");
@@ -122,7 +128,7 @@ Nodo* desapilarMaleta(Pila *p) {
     }
     Nodo *temp = p->tope;
     p->tope = p->tope->siguiente;
-    temp->siguiente = NULL;
+    temp->siguiente = NULL; // Desvincular el nodo antes de devolverlo
     return temp;
 }
 
@@ -135,12 +141,14 @@ void mostrarPila(Pila *p) {
     Nodo *actual = p->tope;
     int posicion = 1;
     while (actual != NULL) {
+        // Imprime la pila desde arriba hacia abajo
         printf("%d. Documento: %d | Peso: %.2f kg\n", posicion, actual->documento, actual->peso);
         actual = actual->siguiente;
         posicion++;
     }
 }
 
+// Libera todos los nodos almacenados en la bodega, limpiando la pila.
 void liberarPila(Pila *p) {
     Nodo *actual = p->tope;
     while (actual != NULL) {
@@ -156,8 +164,6 @@ void liberarPila(Pila *p) {
 void mostrarMenu() {
     printf("\n");
     printf("|----------------------------------------|\n");
-    printf("|   SISTEMA DE MANEJO DE MALETAS         |\n");
-    printf("|----------------------------------------|\n");
     printf("| 1. Registrar nueva maleta              |\n");
     printf("| 2. Mostrar cola de espera              |\n");
     printf("| 3. Revisar y cargar siguiente maleta   |\n");
@@ -171,12 +177,14 @@ void mostrarMenu() {
 void revisarYCargarSiguienteMaleta(Cola *c, Pila *p) {
     Nodo *maleta;
 
+    // Verificar si hay maletas en la cola antes de procesar
     if (colaVacia(c)) {
         printf("\n No hay maletas en la cola de espera\n");
         return;
     }
 
-    printf("\n=== SIGUIENTE MALETA EN ESPERA ===\n");
+    // Mostrar la maleta que se revisara y cargara a bodega
+    printf("\n SIGUIENTE MALETA EN ESPERA \n");
     printf("Documento: %d | Peso: %.2f kg\n", c->frente->documento, c->frente->peso);
 
     maleta = desencolarMaleta(c);
@@ -195,6 +203,7 @@ int main() {
     float peso;
     Nodo *maleta;
 
+    // Inicializar estructuras de datos antes de comenzar
     inicializarCola(&colaEspera);
     inicializarPila(&bodega);
 
@@ -202,13 +211,16 @@ int main() {
     printf("|  BIENVENIDO AL SISTEMA DE MALETAS      |\n");
     printf("|----------------------------------------|\n");
 
+    // Bucle principal del programa que ejecuta el menú de opciones
     while (1) {
         mostrarMenu();
         scanf("%d", &opcion);
         getchar(); // Limpiar buffer de entrada
 
+        // Seleccionar la acción según la opción del usuario
         switch (opcion) {
             case 1:
+                // Registrar nueva maleta en la cola de espera
                 printf("\n--- Registrar nueva maleta ---\n");
                 printf("Ingrese documento del pasajero: ");
                 scanf("%d", &documento);
@@ -224,18 +236,22 @@ int main() {
                 break;
 
             case 2:
+                // Mostrar todas las maletas actualmente en la cola de espera
                 mostrarCola(&colaEspera);
                 break;
 
             case 3:
+                // Revisar la primera maleta en espera y trasladarla a la bodega
                 revisarYCargarSiguienteMaleta(&colaEspera, &bodega);
                 break;
 
             case 4:
+                // Mostrar las maletas almacenadas en la bodega (pila)
                 mostrarPila(&bodega);
                 break;
 
             case 5:
+                // Retirar la última maleta ingresada en la bodega
                 maleta = desapilarMaleta(&bodega);
                 if (maleta != NULL) {
                     printf("\n Maleta retirada de bodega: Documento %d, Peso: %.2f kg\n", 
@@ -245,6 +261,7 @@ int main() {
                 break;
 
             case 6:
+                // Salir del programa liberando toda la memoria dinámica usada
                 printf("\n--- Liberando memoria ---\n");
                 liberarCola(&colaEspera);
                 liberarPila(&bodega);
