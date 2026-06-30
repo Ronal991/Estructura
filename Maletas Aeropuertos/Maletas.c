@@ -20,7 +20,7 @@ typedef struct {
     Nodo *tope;
 } Pila;
 
-// ==================== FUNCIONES DE NODO ====================
+// ------------ FUNCIONES DE NODO -----------------
 // Crea un nodo que representa una maleta, asigna memoria dinámica
 // y almacena el documento y peso del pasajero.
 Nodo* crearNodo(int documento, float peso) {
@@ -35,7 +35,7 @@ Nodo* crearNodo(int documento, float peso) {
     return nuevoNodo;
 }
 
-// ==================== FUNCIONES DE COLA ====================
+// ------------ FUNCIONES DE COLA -----------------
 
 void inicializarCola(Cola *c) {
     c->frente = NULL;
@@ -102,7 +102,7 @@ void liberarCola(Cola *c) {
     c->final = NULL;
 }
 
-// ==================== FUNCIONES DE PILA ====================
+// ------------ FUNCIONES DE PILA -----------------
 
 void inicializarPila(Pila *p) {
     p->tope = NULL;
@@ -159,7 +159,7 @@ void liberarPila(Pila *p) {
     p->tope = NULL;
 }
 
-// ==================== FUNCIONES DE MENÚ ====================
+// ------------ FUNCIONES DE MENÚ -----------------
 
 void mostrarMenu() {
     printf("\n");
@@ -193,7 +193,7 @@ void revisarYCargarSiguienteMaleta(Cola *c, Pila *p) {
     }
 }
 
-// ==================== FUNCIÓN PRINCIPAL ====================
+// ------------ FUNCIÓN PRINCIPAL -----------------
 
 int main() {
     Cola colaEspera;
